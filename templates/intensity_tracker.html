@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise Intensity Tracker</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .graph-container {
+            margin-bottom: 30px;
+            padding: 15px;
+        }
+        .graph-title {
+            margin-bottom: 15px;
+            font-size: 1.5em;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Exercise Intensity Tracker</h1>
+        <p>View the change in exercise intensity for each type.</p>
+        
+        {% for exercise, graph_json in graphs.items() %}
+            <div class="graph-container">
+                <h2 class="graph-title">Intensity Change for {{ exercise }}</h2>
+                <div id="{{ exercise | replace(' ', '_') }}_graph"></div>
+                <script>
+                    var {{ exercise | replace(' ', '_') }}Graph = {{ graph_json | safe }};
+                    Plotly.newPlot("{{ exercise | replace(' ', '_') }}_graph", {{ exercise | replace(' ', '_') }}Graph);
+                </script>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

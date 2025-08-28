@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weight Prediction</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Weight Prediction for {{ user['Name'] }}</h1>
+        <p>Age: {{ user['Age'] }}</p>
+        <p>Height: {{ user['Height'] }} cm</p>
+        <p>Current Weight: {{ user['Weight'] }} kg</p>
+
+        <h2>Prediction Graph</h2>
+        <div id="weight-graph"></div>
+        <script>
+            var weightGraphData = {{ weight_graph_json|safe }};
+            Plotly.newPlot('weight-graph', weightGraphData.data, weightGraphData.layout);
+        </script>
+
+        <a href="/">Back to Dashboard</a>
+    </div>
+</body>
+</html>

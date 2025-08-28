@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Weight Prediction</title>
+    <script src="https://cdn.jsdelivr.net/npm/plotly.js"></script>
+</head>
+<body>
+    <h1>Weight Prediction to Reach Normal BMI</h1>
+    <div id="weightGraph"></div>
+    <script>
+        var graphJSON = {{ graph_json | safe }};
+        Plotly.newPlot('weightGraph', graphJSON.data, graphJSON.layout);
+    </script>
+    {% if weeks_needed is not none %}
+        <p>Estimated weeks to reach normal BMI: {{ weeks_needed }}</p>
+    {% else %}
+        <p>It is not predicted to reach a normal BMI within the next 52 weeks based on the current trend.</p>
+    {% endif %}
+</body>
+</html>

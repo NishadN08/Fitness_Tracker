@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise Log for {{ user }}</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        a {
+            text-decoration: none;
+            color: #fff;
+            background-color: #2980b9;
+            padding: 10px 15px;
+            border-radius: 5px;
+            display: inline-block;
+            margin-top: 20px;
+        }
+
+        a:hover {
+            background-color: #1a5a7b;
+        }
+
+        /* Container Styles */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Section Styles */
+        .section {
+            margin-bottom: 30px;
+            padding: 15px;
+        }
+
+        .section p {
+            margin: 5px 0;
+        }
+
+        .recommendations {
+            background-color: #ecf0f1;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        ul {
+            list-style-type: square;
+            padding-left: 20px;
+        }
+
+        ul li {
+            margin: 5px 0;
+        }
+
+        /* Table styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+
+        table th, table td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: #3f51b5;
+            color: white;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        table tr:hover {
+            background-color: #e8eaf6;
+        }
+
+        /* Form styling */
+        form {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: inline-block;
+        }
+
+        input[type="date"], input[type="number"], select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+
+        button {
+            background-color: #3f51b5;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #303f9f;
+        }
+
+        /* Responsive styling */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+
+            table {
+                font-size: 14px;
+            }
+
+            form {
+                padding: 15px;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+
+        /* Back Button */
+        .back-btn {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Exercise Log for {{ user }}</h1>
+        <div class="back-btn">
+            <a href="{{ url_for('user_dashboard', name=user) }}">Go Back to Dashboard</a>
+            <a href="{{ url_for('prediction_graph', name=user) }}">View Prediction Graph</a>
+            <a href="{{ url_for('exercise_intensity', name=user) }}">View Intensity Graph</a>
+        </div>
+        <!-- Form to add new exercise log -->
+        <h3>Add New Exercise Log:</h3>
+        <form method="POST">
+            <label for="date">Date:</label>
+            <input type="date" name="date" required><br>
+            
+            <label for="exercise_type">Exercise Type:</label>
+            <select name="exercise_type" required>
+                {% for exercise in exercises %}
+                    <option value="{{ exercise }}">{{ exercise }}</option>
+                {% endfor %}
+            </select><br>
+            
+            <label for="duration">Duration (minutes):</label>
+            <input type="number" name="duration" required><br>
+            
+            <label for="weight_before">Weight Before (kg):</label>
+            <input type="number" step="0.1" name="weight_before" required><br>
+            
+            <label for="weight_after">Weight After (kg):</label>
+            <input type="number" step="0.1" name="weight_after" required><br>
+            
+            <button type="submit">Save Log</button>
+        </form>
+
+        <h2>Your Exercise Logs:</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Exercise Type</th>
+                    <th>Duration (min)</th>
+                    <th>Weight Before (kg)</th>
+                    <th>Weight After (kg)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in user_logs %}
+                <tr>
+                    <td>{{ log[1] }}</td>
+                    <td>{{ log[2] }}</td>
+                    <td>{{ log[3] }}</td>
+                    <td>{{ log[4] }}</td>
+                    <td>{{ log[5] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div id="weekly_progress_graph"></div>
+    </div>
+
+
+</body>
+
+</html>

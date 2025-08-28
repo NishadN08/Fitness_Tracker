@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weight Prediction Graph</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <h1>Weight Prediction Graph for {{ user }}</h1>
+    <div id="prediction-graph"></div>
+    <script>
+        var graphData = {{ graph_json|safe }};
+        Plotly.newPlot("prediction-graph", graphData.data, graphData.layout);
+    </script>
+</body>
+</html>
